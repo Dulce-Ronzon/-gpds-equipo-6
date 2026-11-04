@@ -5,7 +5,7 @@
 ## Integrantes
 * Dulce Dayana Ronzón Beltrán 
 * Angel Zaith Arriola Montalvo
-* Raul Guemes Mosqueda
+* GUEMES MOSQUEDA RAUL
 * Alan Benjamin Crisanto Diaz
 
 
