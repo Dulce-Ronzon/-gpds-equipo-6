@@ -4,9 +4,9 @@
 
 ## Integrantes
 * Dulce Dayana Ronzón Beltrán 
-* Raul Guemes Mosqueda
 * Angel Zaith Arriola Montalvo
 * Alan Benjamin Crisanto Diaz
+* Raul Guemes Mosqueda
 
 ## Problemática
 La Taquería Novillero presenta cuellos de botella en la toma de pedidos, tiempos de espera prolongados en horas pico y descontrol puntual en la sincronización entre el área de atención (meseros/caja) y la línea de preparación (taqueros/cocina). El sistema busca automatizar el flujo operativo del negocio desde la captura de comensales hasta la preparación y cobro final, garantizando eficiencia y trazabilidad en los pedidos.
