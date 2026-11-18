@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-11-2026 a las 03:52:18
+-- Tiempo de generación: 18-11-2026 a las 07:00:20
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -31,17 +31,46 @@ CREATE TABLE `detalle_pedidos` (
   `id_detalle` int(11) NOT NULL,
   `id_pedido` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `cantidad` int(11) NOT NULL,
+  `observacion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `detalle_pedidos`
 --
 
-INSERT INTO `detalle_pedidos` (`id_detalle`, `id_pedido`, `id_producto`, `cantidad`) VALUES
-(67, 46, 1, 2),
-(68, 47, 19, 3),
-(69, 47, 25, 3);
+INSERT INTO `detalle_pedidos` (`id_detalle`, `id_pedido`, `id_producto`, `cantidad`, `observacion`) VALUES
+(67, 46, 1, 2, NULL),
+(68, 47, 19, 3, NULL),
+(69, 47, 25, 3, NULL),
+(70, 48, 1, 3, 'sin cebolla'),
+(71, 49, 1, 3, 'sin cebolla'),
+(72, 50, 2, 3, ''),
+(73, 50, 4, 4, ''),
+(74, 50, 6, 1, ''),
+(75, 51, 5, 5, '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historial_precios`
+--
+
+CREATE TABLE `historial_precios` (
+  `id` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `precio_anterior` decimal(10,2) NOT NULL,
+  `precio_nuevo` decimal(10,2) NOT NULL,
+  `usuario_modifico` varchar(50) NOT NULL,
+  `fecha_cambio` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `historial_precios`
+--
+
+INSERT INTO `historial_precios` (`id`, `id_producto`, `precio_anterior`, `precio_nuevo`, `usuario_modifico`, `fecha_cambio`) VALUES
+(1, 5, 80.00, 70.00, 'admin1', '2026-11-17 23:40:19');
 
 -- --------------------------------------------------------
 
@@ -68,7 +97,8 @@ INSERT INTO `historial_ventas` (`id_venta`, `id_pedido`, `total`, `cobrado_por`,
 (3, 42, 72.00, 'Beyker', '2026-06-16 02:24:53', 'COBRADO', '4x Taco de Pastor'),
 (4, 43, 156.00, 'Beyker', '2026-06-16 02:25:14', 'CANCELADO', '6x Taco de perro'),
 (5, 44, 162.00, 'admin1', '2026-06-16 11:23:30', 'COBRADO', '9x Taco de Pastor'),
-(6, 45, 180.00, 'admin1', '2026-06-16 11:24:06', 'CANCELADO', '10x Taco de Pastor');
+(6, 45, 180.00, 'admin1', '2026-06-16 11:24:06', 'CANCELADO', '10x Taco de Pastor'),
+(7, 52, 18.00, 'admin1', '2026-11-17 23:38:33', 'COBRADO', '1x Taco de Pastor\n[Pago -> Efectivo: $0.00 | Digital: $18.00]');
 
 -- --------------------------------------------------------
 
@@ -89,8 +119,12 @@ CREATE TABLE `pedidos_activos` (
 --
 
 INSERT INTO `pedidos_activos` (`id_pedido`, `mesa`, `total`, `fecha_hora`, `estado`) VALUES
-(46, 1, 36.00, '2026-06-16 18:05:27', 'en cocina'),
-(47, 3, 159.00, '2026-06-16 18:05:59', 'en cocina');
+(46, 1, 36.00, '2026-06-16 18:05:27', 'Servido'),
+(47, 3, 159.00, '2026-06-16 18:05:59', 'Servido'),
+(48, 1, 54.00, '2026-11-18 04:37:48', 'Servido'),
+(49, 1, 54.00, '2026-11-18 04:37:48', 'Servido'),
+(50, 1, 148.00, '2026-11-18 04:52:22', 'Servido'),
+(51, 1, 400.00, '2026-11-18 05:24:48', 'Servido');
 
 -- --------------------------------------------------------
 
@@ -111,12 +145,12 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `categoria`, `precio`, `existencias`) VALUES
-(1, 'Taco de Pastor', 'taco', 18.00, 14),
-(2, 'Taco de Suadero', 'taco', 18.00, 114),
+(1, 'Taco de Pastor', 'taco', 18.00, 7),
+(2, 'Taco de Suadero', 'taco', 18.00, 111),
 (3, 'Taco de perro', 'taco', 26.00, 992),
-(4, 'Taco de Longaniza', 'taco', 18.00, 59),
-(5, 'Taco de Campechano', 'taco', 80.00, 89),
-(6, 'Taco de Tripa', 'taco', 22.00, 42),
+(4, 'Taco de Longaniza', 'taco', 18.00, 55),
+(5, 'Taco de Campechano', 'taco', 70.00, 84),
+(6, 'Taco de Tripa', 'taco', 22.00, 41),
 (8, 'Taco de Lengua', 'taco', 25.00, 100),
 (9, 'Taco de Gringa (Al Pastor con Queso)', 'taco', 35.00, 61),
 (10, 'Taco de Volcán de Bistec', 'taco', 38.00, 45),
@@ -195,6 +229,13 @@ ALTER TABLE `detalle_pedidos`
   ADD KEY `detalle_pedidos_ibfk_1` (`id_pedido`);
 
 --
+-- Indices de la tabla `historial_precios`
+--
+ALTER TABLE `historial_precios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_producto` (`id_producto`);
+
+--
 -- Indices de la tabla `historial_ventas`
 --
 ALTER TABLE `historial_ventas`
@@ -227,19 +268,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `detalle_pedidos`
 --
 ALTER TABLE `detalle_pedidos`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+
+--
+-- AUTO_INCREMENT de la tabla `historial_precios`
+--
+ALTER TABLE `historial_precios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_ventas`
 --
 ALTER TABLE `historial_ventas`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos_activos`
 --
 ALTER TABLE `pedidos_activos`
-  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -262,6 +309,12 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `detalle_pedidos`
   ADD CONSTRAINT `detalle_pedidos_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos_activos` (`id_pedido`);
+
+--
+-- Filtros para la tabla `historial_precios`
+--
+ALTER TABLE `historial_precios`
+  ADD CONSTRAINT `historial_precios_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
