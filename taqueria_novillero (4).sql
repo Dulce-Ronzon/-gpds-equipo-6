@@ -1,0 +1,375 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 18-11-2026 a las 19:47:00
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `taqueria_novillero`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `asistencia`
+--
+
+CREATE TABLE `asistencia` (
+  `id` int(11) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `fecha_hora` datetime NOT NULL DEFAULT current_timestamp(),
+  `tipo` varchar(20) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `asistencia`
+--
+
+INSERT INTO `asistencia` (`id`, `usuario`, `fecha_hora`, `tipo`, `id_usuario`) VALUES
+(1, '', '2026-11-18 00:12:58', 'ENTRADA', 11),
+(2, '', '2026-11-18 00:15:23', 'SALIDA', 11);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_pedidos`
+--
+
+CREATE TABLE `detalle_pedidos` (
+  `id_detalle` int(11) NOT NULL,
+  `id_pedido` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `observacion` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalle_pedidos`
+--
+
+INSERT INTO `detalle_pedidos` (`id_detalle`, `id_pedido`, `id_producto`, `cantidad`, `observacion`) VALUES
+(68, 47, 19, 3, NULL),
+(69, 47, 25, 3, NULL),
+(70, 48, 1, 3, 'sin cebolla'),
+(71, 49, 1, 3, 'sin cebolla'),
+(72, 50, 2, 3, ''),
+(73, 50, 4, 4, ''),
+(74, 50, 6, 1, ''),
+(75, 51, 5, 5, ''),
+(78, 54, 1, 1, ''),
+(79, 54, 2, 1, ''),
+(80, 54, 3, 1, ''),
+(81, 54, 5, 1, ''),
+(82, 54, 6, 1, ''),
+(83, 54, 8, 1, ''),
+(84, 54, 9, 1, ''),
+(85, 54, 10, 1, ''),
+(86, 55, 1, 1, ''),
+(87, 55, 2, 1, ''),
+(88, 55, 3, 1, ''),
+(89, 55, 4, 1, ''),
+(90, 55, 5, 1, ''),
+(91, 55, 6, 1, ''),
+(92, 55, 8, 1, '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historial_precios`
+--
+
+CREATE TABLE `historial_precios` (
+  `id` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `precio_anterior` decimal(10,2) NOT NULL,
+  `precio_nuevo` decimal(10,2) NOT NULL,
+  `usuario_modifico` varchar(50) NOT NULL,
+  `fecha_cambio` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `historial_precios`
+--
+
+INSERT INTO `historial_precios` (`id`, `id_producto`, `precio_anterior`, `precio_nuevo`, `usuario_modifico`, `fecha_cambio`) VALUES
+(1, 5, 80.00, 70.00, 'admin1', '2026-11-17 23:40:19'),
+(2, 9, 35.00, 70.00, 'Duche rob', '2026-11-18 00:14:23');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `historial_ventas`
+--
+
+CREATE TABLE `historial_ventas` (
+  `id_venta` int(11) NOT NULL,
+  `id_pedido` int(11) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `cobrado_por` varchar(100) NOT NULL,
+  `fecha_hora_cobro` datetime NOT NULL,
+  `estado` enum('COBRADO','CANCELADO') NOT NULL DEFAULT 'COBRADO',
+  `productos_vendidos` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `historial_ventas`
+--
+
+INSERT INTO `historial_ventas` (`id_venta`, `id_pedido`, `total`, `cobrado_por`, `fecha_hora_cobro`, `estado`, `productos_vendidos`) VALUES
+(2, 41, 54.00, 'admin1', '2026-06-16 02:20:27', 'COBRADO', '3x Taco de Pastor'),
+(3, 42, 72.00, 'Beyker', '2026-06-16 02:24:53', 'COBRADO', '4x Taco de Pastor'),
+(4, 43, 156.00, 'Beyker', '2026-06-16 02:25:14', 'CANCELADO', '6x Taco de perro'),
+(5, 44, 162.00, 'admin1', '2026-06-16 11:23:30', 'COBRADO', '9x Taco de Pastor'),
+(6, 45, 180.00, 'admin1', '2026-06-16 11:24:06', 'CANCELADO', '10x Taco de Pastor'),
+(7, 52, 18.00, 'admin1', '2026-11-17 23:38:33', 'COBRADO', '1x Taco de Pastor\n[Pago -> Efectivo: $0.00 | Digital: $18.00]'),
+(8, 53, 54.00, 'Duche rob', '2026-11-18 00:13:22', 'COBRADO', '3x Taco de Pastor\n[Pago -> Efectivo: $54.00 | Digital: $0.00]'),
+(9, 46, 36.00, 'Duche rob', '2026-11-18 00:15:42', 'CANCELADO', '2x Taco de Pastor');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos_activos`
+--
+
+CREATE TABLE `pedidos_activos` (
+  `id_pedido` int(11) NOT NULL,
+  `mesa` int(11) NOT NULL DEFAULT 0,
+  `total` decimal(30,2) NOT NULL,
+  `fecha_hora` timestamp NOT NULL DEFAULT current_timestamp(),
+  `estado` varchar(20) NOT NULL DEFAULT 'en cocina'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pedidos_activos`
+--
+
+INSERT INTO `pedidos_activos` (`id_pedido`, `mesa`, `total`, `fecha_hora`, `estado`) VALUES
+(47, 3, 159.00, '2026-06-16 18:05:59', 'Servido'),
+(48, 1, 54.00, '2026-11-18 04:37:48', 'Servido'),
+(49, 1, 54.00, '2026-11-18 04:37:48', 'Servido'),
+(50, 1, 148.00, '2026-11-18 04:52:22', 'Servido'),
+(51, 1, 400.00, '2026-11-18 05:24:48', 'Servido'),
+(54, 1, 287.00, '2026-11-18 06:24:14', 'en cocina'),
+(55, 1, 197.00, '2026-11-18 06:24:32', 'en cocina');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `categoria` enum('taco','agua fresca','refresco','postre') NOT NULL,
+  `precio` decimal(6,2) NOT NULL,
+  `existencias` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id`, `nombre`, `categoria`, `precio`, `existencias`) VALUES
+(1, 'Taco de Pastor', 'taco', 18.00, 2),
+(2, 'Taco de Suadero', 'taco', 18.00, 109),
+(3, 'Taco de perro', 'taco', 26.00, 990),
+(4, 'Taco de Longaniza', 'taco', 18.00, 54),
+(5, 'Taco de Campechano', 'taco', 70.00, 82),
+(6, 'Taco de Tripa', 'taco', 22.00, 39),
+(8, 'Taco de Lengua', 'taco', 25.00, 98),
+(9, 'Taco de Gringa (Al Pastor con Queso)', 'taco', 70.00, 60),
+(10, 'Taco de Volcán de Bistec', 'taco', 38.00, 44),
+(11, 'Agua de Horchata Grande', 'agua fresca', 25.00, 30),
+(12, 'Agua de Jamaica Grande', 'agua fresca', 25.00, 24),
+(13, 'Agua de Tamarindo Grande', 'agua fresca', 25.00, 20),
+(14, 'Agua de Limón con Chía Grande', 'agua fresca', 25.00, 14),
+(15, 'Agua de Guayaba Grande', 'agua fresca', 25.00, 12),
+(16, 'Coca-Cola Original 600ml', 'refresco', 22.00, 41),
+(17, 'Coca-Cola Sin Azúcar 600ml', 'refresco', 22.00, 24),
+(18, 'Sidral Mundet 600ml', 'refresco', 20.00, 28),
+(19, 'Jarrito de Mandarina 600ml', 'refresco', 18.00, 33),
+(20, 'Agua Mineral Topo Chico', 'refresco', 25.00, 16),
+(21, 'Flan Napolitano', 'postre', 30.00, 14),
+(22, 'Jericalla', 'postre', 25.00, 20),
+(23, 'Pay de Limón', 'postre', 31.00, 28),
+(24, 'Arroz con Leche', 'postre', 70.00, 6),
+(25, 'Fresas con Crema', 'postre', 35.00, 5),
+(26, 'Agua de mazapan', 'agua fresca', 45.00, 0),
+(35, 'Taco de pollo', 'taco', 9.00, 0),
+(36, 'pay', 'postre', 60.00, 0),
+(37, 'Agua de kiwi', 'agua fresca', 30.00, 0),
+(38, 'Doctor pepper', 'refresco', 20.00, 0),
+(39, 'taco de cecina', 'taco', 14.00, 0),
+(40, 'tacos de panza', 'taco', 50.00, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `contrasena` varchar(255) NOT NULL,
+  `rol` enum('administrador','trabajador') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `rol`) VALUES
+(2, 'empleado1', 'tacos123', 'trabajador'),
+(3, 'trabajador2', 'tacos321', 'trabajador'),
+(6, 'admin1', 'admin123', 'administrador'),
+(7, 'DUEÑO', 'novillero1', 'administrador'),
+(10, 'Angel Arriola', '123', 'administrador'),
+(11, 'Duche rob', '123', 'administrador'),
+(12, 'Beyker', '123', 'trabajador'),
+(14, 'alan', 'jotito', 'trabajador');
+
+--
+-- Disparadores `usuarios`
+--
+DELIMITER $$
+CREATE TRIGGER `bd_proteger_dueno` BEFORE DELETE ON `usuarios` FOR EACH ROW BEGIN
+    -- Si el ID que intentan borrar es el 7, frenamos la operación en seco
+    IF OLD.id = 7 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'ERROR: El perfil del Dueño (ID 7) está blindado y no puede ser eliminado.';
+    END IF;
+END
+$$
+DELIMITER ;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `asistencia`
+--
+ALTER TABLE `asistencia`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `detalle_pedidos`
+--
+ALTER TABLE `detalle_pedidos`
+  ADD PRIMARY KEY (`id_detalle`),
+  ADD KEY `detalle_pedidos_ibfk_1` (`id_pedido`);
+
+--
+-- Indices de la tabla `historial_precios`
+--
+ALTER TABLE `historial_precios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_producto` (`id_producto`);
+
+--
+-- Indices de la tabla `historial_ventas`
+--
+ALTER TABLE `historial_ventas`
+  ADD PRIMARY KEY (`id_venta`);
+
+--
+-- Indices de la tabla `pedidos_activos`
+--
+ALTER TABLE `pedidos_activos`
+  ADD PRIMARY KEY (`id_pedido`);
+
+--
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuario` (`usuario`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `asistencia`
+--
+ALTER TABLE `asistencia`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `detalle_pedidos`
+--
+ALTER TABLE `detalle_pedidos`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+
+--
+-- AUTO_INCREMENT de la tabla `historial_precios`
+--
+ALTER TABLE `historial_precios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `historial_ventas`
+--
+ALTER TABLE `historial_ventas`
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `pedidos_activos`
+--
+ALTER TABLE `pedidos_activos`
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `detalle_pedidos`
+--
+ALTER TABLE `detalle_pedidos`
+  ADD CONSTRAINT `detalle_pedidos_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos_activos` (`id_pedido`);
+
+--
+-- Filtros para la tabla `historial_precios`
+--
+ALTER TABLE `historial_precios`
+  ADD CONSTRAINT `historial_precios_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
