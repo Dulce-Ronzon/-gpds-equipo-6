@@ -148,7 +148,7 @@ if (!isset($_SESSION['usuario'])) {
         }
 
         .btn-salir:hover {
-            background-color: #d32f2f;
+            background-color: #b71c1c;
         }
     </style>
 </head>
@@ -160,18 +160,20 @@ if (!isset($_SESSION['usuario'])) {
             <div class="bienvenida">Bienvenido, Jefe: <?php echo htmlspecialchars($_SESSION['usuario']); ?></div>
         </div>
 
-        <!-- SECCIÓN 1: OPERACIÓN -->
+        <!-- SECCIÓN 1: OPERACIÓN (Incluye funciones de empleado y control de asistencia) -->
         <div class="seccion-panel">
             <h3>Acciones de Operación (Funciones de Empleado)</h3>
             <ul class="menu-links">
                 <li><a href="hacer_pedidoA.php">Tomar nueva orden</a></li>
                 <li><a href="historial_pedidosA.php">Pedidos Activos</a></li>
                 <li><a href="historial_ventasA.php">Ver Historial de Ventas</a></li>
-		<li><a href="cocinaA.php" class="btn">Cocina</a></li>
+                <li><a href="cocinaA.php">Cocina</a></li>
+                <!-- Botón de asistencia ubicado en la zona de operaciones del admin -->
+                <li><a href="control_asistencia.php" style="background-color: #2e7d32; color: white; border-color: #1e4620; box-shadow: 0 3px 0 #1e4620;">Control de Asistencia</a></li>
             </ul>
         </div>
 
-        <!-- SECCIÓN 2: HERRAMIENTAS EXCLUSIVAS -->
+        <!-- SECCIÓN 2: HERRAMIENTAS EXCLUSIVAS DE ADMINISTRACIÓN -->
         <div class="seccion-panel admin-box">
             <h3>Herramientas de Administrador (Exclusivo)</h3>
             <ul class="menu-links">

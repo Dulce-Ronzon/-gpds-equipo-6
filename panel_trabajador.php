@@ -159,6 +159,8 @@ if (!isset($_SESSION['usuario'])) {
                 <li><a href="historial_pedidos.php">Ver Historial de Pedidos</a></li>
                 <li><a href="historial_ventas.php">Consultar Historial Ventas</a></li>
                 <li><a href="cocina.php" class="btn">Cocina</a></li>
+                <!-- NUEVO MÓDULO DE ASISTENCIA (HU01 / ATN-16) -->
+                <li><a href="control_asistencia.php" style="background-color: #2e7d32;">Control de Asistencia</a></li>
             </ul>
         </div>
 
