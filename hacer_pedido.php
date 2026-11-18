@@ -67,6 +67,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cantidades'])) {
 }
 
 $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
+$lista_productos = [];
+if ($productos_menu && $productos_menu->num_rows > 0) {
+    while ($r = $productos_menu->fetch_assoc()) {
+        $lista_productos[] = $r;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +95,7 @@ $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
 
         .container {
             width: 100%;
-            max-width: 700px;
+            max-width: 750px;
             background-color: #ffffff;
             padding: 25px;
             border-radius: 20px; /* Esquinas redondeadas */
@@ -104,7 +110,7 @@ $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
             border-bottom: 3px double #d32f2f; /* Línea roja doble estilo rancho */
             padding-bottom: 10px;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .mensaje-alerta {
@@ -127,7 +133,52 @@ $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
             border-left: 6px solid #d32f2f;
         }
 
-        /* Estilo para la sección de mesa añadida */
+        /* HU10: Leyenda visual discreta de atajos de teclado */
+        .leyenda-atajos {
+            background-color: #fcf8f2;
+            border: 1px solid #d7ccc8;
+            border-left: 4px solid #3d2514;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            font-size: 12px;
+        }
+
+        .leyenda-titulo {
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #3d2514;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leyenda-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            align-items: center;
+        }
+
+        .item-atajo {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #5c4033;
+        }
+
+        kbd {
+            background-color: #2c1d11;
+            color: #ffffff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            font-family: inherit;
+            box-shadow: 0 2px 0 #d32f2f;
+        }
+
         .seccion-mesa {
             background-color: #fcf8f2;
             padding: 15px;
@@ -136,6 +187,8 @@ $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
             margin-bottom: 20px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 15px;
         }
 
@@ -143,6 +196,16 @@ $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
             font-weight: bold;
             text-transform: uppercase;
             font-size: 14px;
+        }
+
+        .total-vivo {
+            font-size: 16px;
+            font-weight: bold;
+            color: #b71c1c;
+            background-color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #3d2514;
         }
 
         table {
@@ -170,10 +233,16 @@ $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
             border-bottom: 1px solid #f4ece1;
             color: #2c1d11;
             font-size: 15px;
+            transition: background-color 0.25s ease;
         }
 
         tr:last-child td {
             border-bottom: none;
+        }
+
+        /* Efecto de destello cuando se usa un atajo de teclado */
+        tr.fila-activa td {
+            background-color: #fff3cd !important;
         }
 
         input[type="number"] {
@@ -246,47 +315,163 @@ $productos_menu = $conexion->query("SELECT id, nombre, precio FROM productos");
             </div>
         <?php endif; ?>
 
-        <form action="hacer_pedido.php" method="POST">
-            <!-- Campo de Mesa agregado manteniendo la armonía del diseño -->
+        <!-- HU10: Leyenda visual discreta de teclas rápidas -->
+        <?php if (!empty($lista_productos)): ?>
+            <div class="leyenda-atajos">
+                <div class="leyenda-titulo">
+                    <span>⚡ Comandos Rápidos de Teclado</span>
+                    <span style="font-weight: normal; font-size: 11px;">[Shift + Tecla] resta 1 | <kbd>Alt+M</kbd> Mesa | <kbd>F12</kbd> Guardar</span>
+                </div>
+                <div class="leyenda-grid">
+                    <?php 
+                    $indice_tecla = 1;
+                    foreach ($lista_productos as $prod_item): 
+                        if ($indice_tecla > 10) break; // Máximo F1 a F10
+                        $tecla_nombre = "F" . $indice_tecla;
+                    ?>
+                        <span class="item-atajo">
+                            <kbd><?php echo $tecla_nombre; ?></kbd> <?php echo htmlspecialchars($prod_item['nombre']); ?>
+                        </span>
+                    <?php 
+                        $indice_tecla++;
+                    endforeach; 
+                    ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <form id="form-pedido" action="hacer_pedido.php" method="POST">
             <div class="seccion-mesa">
-                <label for="mesa">Asignar Número de Mesa:</label>
-                <input type="number" id="mesa" name="mesa" min="1" max="99" value="1" required style="width: 80px;">
+                <div>
+                    <label for="mesa">Asignar Número de Mesa:</label>
+                    <input type="number" id="mesa" name="mesa" min="1" max="99" value="1" required style="width: 80px;">
+                </div>
+                <div class="total-vivo">
+                    Total Estimado: $<span id="total-estimado">0.00</span>
+                </div>
             </div>
 
             <table>
                 <thead>
                     <tr>
+                        <th style="text-align: center; width: 70px;">Atajo</th>
                         <th style="text-align: left;">Producto / Platillo</th>
-                        <th style="text-align: right; width: 120px;">Precio</th>
-                        <th style="text-align: center; width: 160px;">Cantidad a ordenar</th>
+                        <th style="text-align: right; width: 110px;">Precio</th>
+                        <th style="text-align: center; width: 150px;">Cantidad a ordenar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($productos_menu && $productos_menu->num_rows > 0): ?>
-                        <?php while ($row = $productos_menu->fetch_assoc()): ?>
-                            <tr>
+                    <?php if (!empty($lista_productos)): ?>
+                        <?php 
+                        $contador = 1;
+                        foreach ($lista_productos as $row): 
+                            $tecla_asignada = ($contador <= 10) ? "F" . $contador : "";
+                        ?>
+                            <tr id="fila-prod-<?php echo $row['id']; ?>">
+                                <td style="text-align: center;">
+                                    <?php if ($tecla_asignada): ?>
+                                        <kbd><?php echo $tecla_asignada; ?></kbd>
+                                    <?php else: ?>
+                                        <span style="color: #999; font-size: 12px;">—</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td><strong><?php echo htmlspecialchars($row['nombre']); ?></strong></td>
                                 <td style="text-align: right; font-weight: bold;">$<?php echo number_format($row['precio'], 2); ?></td>
                                 <td style="text-align: center;">
-                                    <input type="number" name="cantidades[<?php echo $row['id']; ?>]" min="0" value="0">
+                                    <input type="number" 
+                                           class="input-cantidad"
+                                           data-tecla="<?php echo $tecla_asignada; ?>"
+                                           data-precio="<?php echo $row['precio']; ?>"
+                                           data-fila="fila-prod-<?php echo $row['id']; ?>"
+                                           name="cantidades[<?php echo $row['id']; ?>]" 
+                                           min="0" 
+                                           value="0">
                                 </td>
                             </tr>
-                        <?php endwhile; ?>
+                        <?php 
+                            $contador++;
+                        endforeach; 
+                        ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="3" style="text-align: center; font-style: italic;">No hay productos registrados en el menú.</td>
+                            <td colspan="4" style="text-align: center; font-style: italic;">No hay productos registrados en el menú.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
 
-            <button type="submit" class="btn-rojo">Guardar Pedido de la Mesa</button>
+            <button type="submit" class="btn-rojo">Guardar Pedido de la Mesa [F12]</button>
         </form>
 
         <div style="text-align: center;">
             <a href="panel_trabajador.php" class="enlace-volver">← Volver al Panel Operativo</a>
         </div>
     </div>
+
+    <script>
+        function actualizarTotalVivo() {
+            let total = 0;
+            document.querySelectorAll('.input-cantidad').forEach(function(input) {
+                let cant = parseInt(input.value) || 0;
+                let precio = parseFloat(input.getAttribute('data-precio')) || 0;
+                if (cant > 0) {
+                    total += cant * precio;
+                }
+            });
+            document.getElementById('total-estimado').textContent = total.toFixed(2);
+        }
+
+        // Escuchar cambios manuales en los inputs
+        document.querySelectorAll('.input-cantidad').forEach(function(input) {
+            input.addEventListener('input', actualizarTotalVivo);
+        });
+
+        // HU10: Manejador de atajos de teclado (F1 - F10, F12, Alt+M)
+        document.addEventListener('keydown', function(e) {
+            // Alt + M para enfocar rápido el número de mesa
+            if (e.altKey && (e.key === 'm' || e.key === 'M')) {
+                e.preventDefault();
+                const inputMesa = document.getElementById('mesa');
+                inputMesa.focus();
+                inputMesa.select();
+                return;
+            }
+
+            // F12 para enviar el formulario directamente
+            if (e.key === 'F12') {
+                e.preventDefault();
+                document.getElementById('form-pedido').submit();
+                return;
+            }
+
+            // Verificar si la tecla presionada corresponde a un producto (F1 a F10)
+            const inputObjetivo = document.querySelector(`.input-cantidad[data-tecla="${e.key}"]`);
+            if (inputObjetivo) {
+                e.preventDefault(); // Evitar que F1 abra la ayuda del navegador, F5 recargue, etc.
+                let valorActual = parseInt(inputObjetivo.value) || 0;
+
+                if (e.shiftKey) {
+                    // Shift + F1..F10 resta 1 unidad
+                    inputObjetivo.value = Math.max(0, valorActual - 1);
+                } else {
+                    // F1..F10 suma 1 unidad
+                    inputObjetivo.value = valorActual + 1;
+                }
+
+                actualizarTotalVivo();
+
+                // Destello visual en la fila correspondiente
+                const idFila = inputObjetivo.getAttribute('data-fila');
+                const fila = document.getElementById(idFila);
+                if (fila) {
+                    fila.classList.remove('fila-activa');
+                    void fila.offsetWidth; // Forzar reflow
+                    fila.classList.add('fila-activa');
+                    setTimeout(() => fila.classList.remove('fila-activa'), 300);
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>

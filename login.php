@@ -1,5 +1,6 @@
 ﻿<?php
 session_start();
+require_once 'validar_sesion.php';
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -9,13 +10,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $conexion->real_escape_string($_POST['usuario']);
     $pass = $conexion->real_escape_string($_POST['contrasena']);
 
-    $sql = "SELECT usuario, rol FROM usuarios WHERE usuario = '$user' AND contrasena = '$pass'";
+    $sql = "SELECT id, usuario, rol FROM usuarios WHERE usuario = '$user' AND contrasena = '$pass'";
     $resultado = $conexion->query($sql);
 
     if ($resultado && $resultado->num_rows > 0) {
         $fila = $resultado->fetch_assoc();
-        $_SESSION['usuario'] = $fila['usuario'];
-        $_SESSION['rol'] = $fila['rol']; // Guardamos el rol por si acaso
+        $_SESSION['id_usuario']       = $fila['id'];
+	$_SESSION['usuario']          = $fila['usuario'];
+	$_SESSION['rol']              = $fila['rol']; // 'administrador' o 'trabajador'
+	$_SESSION['ultima_actividad'] = time();
+	$_SESSION['token_sesion']     = generarTokenSesion($fila['usuario'], $fila['rol']);
 
         // Redirección dependiendo del rol
         if ($fila['rol'] == 'administrador') {
