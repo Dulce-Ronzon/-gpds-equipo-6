@@ -181,6 +181,7 @@ if (!isset($_SESSION['usuario'])) {
                 <li><a href="cambiar_precios.php">Modificar Menú</a></li>
                 <li><a href="gestionar_usuarios.php">Gestionar Usuarios</a></li>
                 <li><a href="gestionar_inventario.php">Gestionar Inventario</a></li>
+                <li><a href="generar_backup.php">Generar Backup</a></li>
             </ul>
         </div>
 
