@@ -1,5 +1,5 @@
 integrante-principal.md
-# Retrospectiva Individual — Sprint 1 (Taquería Novillero)
+# Retrospectiva Individual Dulce Ronzón — Sprint 1 (Taquería Novillero)
 
 * **Sprint:** Sprint 1
 * **Claves de Jira / Historias:** `HU03 / ATN-3` (Auditoría de cambios de precios) y `HU01 / ATN-16` (Control de asistencia)
