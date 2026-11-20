@@ -6,9 +6,10 @@ Sprint-1.md
 * **Cumplimiento:** Sí, la meta se cumplió al 100%, logrando entregar los módulos funcionales validados en entorno local y sincronizados en el repositorio del equipo.
 
 ## 2. Roles del Sprint 1
-* **Product Owner:** Responsable de priorizar el backlog y validar las historias de usuario en Jira.
-* **Scrum Master:** Encargado de facilitar el seguimiento del sprint, la revisión en clase y el cierre del ciclo.
+* **Product Owner:** Raul Guemes Mosqueda
+* **Scrum Master:** Dulce Dayana Ronzón Beltrán
 * **Development Team:** Integración de módulos PHP, estructura de base de datos MySQL, control de versiones en GitHub y pruebas locales en XAMPP.
+* Angel Zaith, Alan Benjamin
 
 ## 3. Planeación y Revisión
 * **Planeación:** Se seleccionaron las historias de usuario del Sprint 1 para estructurar las tablas de MySQL y desarrollar las funcionalidades operativas en PHP con control de sesión por rol.
@@ -29,8 +30,8 @@ Sprint-1.md
 | Exportación directa de reportes a PDF | Descargar reportes en PDF desde el panel administrativo en el Sprint 1. | No aceptada | Se pospuso para el siguiente sprint para priorizar la estabilidad de los módulos base. |
 
 ## 6. Propuestas para el Siguiente Sprint
-* **Propuesta de Product Owner:** Integrante 1 (distinto al Scrum Master propuesto).
-* **Propuesta de Scrum Master:** Integrante 2 (distinto al Product Owner propuesto).
+* **Propuesta de Product Owner:** Alan Benjamin Crisanto Diaz.
+* **Propuesta de Scrum Master:** Angel Zaith Arriola Montalvo
 * **Propuestas de trabajo y mejora:**
   * Mantener actualizado el script SQL en el repositorio cada vez que cambie la estructura de tablas.
   * Completar mejoras pendientes de interfaz y reportes en el siguiente sprint (creado en Jira y dejado sin iniciar).
