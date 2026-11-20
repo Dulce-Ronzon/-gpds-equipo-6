@@ -1,0 +1,15 @@
+# Retrospectiva Individual Raul Guemes Mosqueda — Sprint 1 (Taquería Novillero)
+
+- **Sprint:** Sprint 1
+- **Claves de Jira / Historias:** `HU04 / ATN-4` (Validación de tokens de sesión por roles), `HU10 / ATN-10` (Atajos de teclado en el punto de venta) y `HU12 / ATN-12` (Pagos divididos o mixtos)
+- **Pull Request:** Vinculado con clave de Jira hacia `main`
+
+## Mi experiencia en el sprint
+
+Durante este sprint trabajé tanto en el fortalecimiento de la seguridad del backend como en la agilización de los flujos operativos de caja y toma de órdenes. Para la `HU04`, desarrollé el middleware centralizado `validar_sesion.php` e integré la generación y verificación de tokens HMAC firmados por rol en `login.php` y en las vistas privadas del sistema, incorporando control de expiración por inactividad y bloqueo HTTP 403 cuando un usuario con rol `trabajador` intenta acceder a módulos exclusivos de administración.
+
+Por otro lado, implementé mejoras clave de experiencia de usuario en el punto de venta: en `hacer_pedido.php` y `hacer_pedidoA.php` (`HU10`) agregué soporte para comandos rápidos mediante teclas de función (`F1`–`F10` para sumar productos, `Shift` para restar, `Alt+M` para asignar mesa y `F12` para guardar) acompañados de una leyenda visual discreta y cálculo de total en tiempo real. Finalmente, en `historial_pedidos.php` y `historial_pedidosA.php` (`HU12`) diseñé una interfaz modal para procesar pagos divididos entre efectivo y medios digitales, validando tanto en cliente como en servidor que la suma cubra el total de la orden antes de cerrar la cuenta y registrando el desglose en `historial_ventas` sin alterar el esquema de la base de datos.
+
+## Mi idea para mejorar en el siguiente sprint
+
+Establecer una convención más estricta de modularización y reutilización de código (evitando duplicar lógica entre las vistas de trabajador y administrador como `hacer_pedido` / `hacer_pedidoA` o `historial_pedidos` / `historial_pedidosA`), además de sincronizar los cambios en ramas antes de hacer merge a `main` para reducir conflictos al integrar nuevas funcionalidades sobre los mismos archivos PHP.
