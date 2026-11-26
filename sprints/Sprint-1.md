@@ -9,7 +9,7 @@ Sprint-1.md
 * **Product Owner:** Raul Guemes Mosqueda
 * **Scrum Master:** Dulce Dayana Ronzón Beltrán
 * **Development Team:** Integración de módulos PHP, estructura de base de datos MySQL, control de versiones en GitHub y pruebas locales en XAMPP.
-* Angel Zaith, Alan Benjamin
+  * Angel Zaith, Alan Benjamin
 
 ## 3. Planeación y Revisión
 * **Planeación:** Se seleccionaron las historias de usuario del Sprint 1 para estructurar las tablas de MySQL y desarrollar las funcionalidades operativas en PHP con control de sesión por rol.
@@ -18,10 +18,11 @@ Sprint-1.md
 ## 4. Métricas y «Análisis del sprint»
 * **Pronóstico (martes 17):** Registrado en el work item *Análisis del sprint* en Jira.
 * **Puntos comprometidos:** Registrados al inicio del Sprint 1 en Jira.
-* **Puntos terminados:** Registrados al cierre del Sprint 1 en Jira.
+* **Puntos terminados:** `[X]` story points (y registrado al cierre del Sprint 1 en Jira).
 * **Velocidad del sprint:** Calculada al cerrar el Sprint 1 con el botón *Complete sprint* en Jira.
 
 ## 5. Ideas del Sprint (Evaluación)
+
 | Idea | Descripción | Aceptada / No aceptada | Comentario |
 | :--- | :--- | :--- | :--- |
 | Bitácora automática de precios (`ATN-3`) | Registrar precio anterior, precio nuevo, usuario que modificó y fecha/hora en `historial_precios` al editar un producto. | Aceptada | Implementada en `cambiar_precios.php` con restricción exclusiva para rol de administrador. |
@@ -29,12 +30,10 @@ Sprint-1.md
 | Validación centralizada de sesiones | Verificar sesión y rol (`administrador` / `trabajador`) antes de ejecutar acciones sensibles. | Aceptada | Mejora la seguridad y evita accesos indebidos entre paneles. |
 | Exportación directa de reportes a PDF | Descargar reportes en PDF desde el panel administrativo en el Sprint 1. | No aceptada | Se pospuso para el siguiente sprint para priorizar la estabilidad de los módulos base. |
 
-## 6. Propuestas para el Siguiente Sprint
+## 6. Propuestas para el Siguiente Sprint y Acuerdo de Retrospectiva
 * **Propuesta de Product Owner:** Alan Benjamin Crisanto Diaz.
-* **Propuesta de Scrum Master:** Angel Zaith Arriola Montalvo
-* **Propuestas de trabajo y mejora:**
-  * Mantener actualizado el script SQL en el repositorio cada vez que cambie la estructura de tablas.
-  * Completar mejoras pendientes de interfaz y reportes en el siguiente sprint (creado en Jira y dejado sin iniciar).
+* **Propuesta de Scrum Master:** Angel Zaith Arriola Montalvo.
+* **Acuerdo de retrospectiva:** Mantener actualizado el script SQL en el repositorio cada vez que cambie la estructura de tablas, revisar los *Pull Requests* con anticipación y completar las mejoras pendientes de interfaz y reportes en el siguiente sprint (creado en Jira y dejado sin iniciar).
 
 ## 7. Cierre
 * **Release:** `v1.0` publicado con notas en GitHub.
