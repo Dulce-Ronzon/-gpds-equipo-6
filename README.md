@@ -25,4 +25,6 @@ La Taquería Novillero presenta cuellos de botella en la toma de pedidos, tiempo
 * **Release:** [v1.0](https://github.com/Dulce-Ronzon/-gpds-equipo-6/releases/tag/v1.0)
 * **Registro del Sprint 1:** [`sprints/Sprint-1.md`](sprints/Sprint-1.md)
 * **Retrospectiva del equipo:** [`retrospectiva/equipo6.md`](retrospectiva/retrospectiva-equipo6.md)
-* **Autoevaluaciones:** [Carpeta `autoevaluaciones/`](autoevaluaciones/)
+* **Autoevaluaciones:** [Carpeta `autoevaluaciones/`](autoevaluaciones/autoevaluaciones)
+
+
